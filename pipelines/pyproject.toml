@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tradebox-pipelines"
+version = "0.1.0"
+description = "Dagster pipeline app for tradebox."
+requires-python = ">=3.11"
+dependencies = [
+  "dagster==1.8.13",
+  "dagster-webserver==1.8.13",
+  "grpcio==1.67.1",
+  "grpcio-health-checking==1.62.3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.3.3",
+  "ruff==0.7.3",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "../packages/shared_core/src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

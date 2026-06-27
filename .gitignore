@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Local scratch/data
+scratch/
+tmp/
+temp/
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Local agent documentation
+docs/agent/
+
+# Frontend/build artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
