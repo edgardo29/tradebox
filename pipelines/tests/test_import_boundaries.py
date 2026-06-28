@@ -4,13 +4,40 @@ import ast
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+GENERATED_PATH_PARTS = {
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "build",
+    "dist",
+}
+ALLOWED_HIDDEN_FILES = {".env.example"}
+TEXT_SUFFIXES = {"", ".example", ".ini", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"}
+
+
+def _is_generated_path(path: Path) -> bool:
+    return any(
+        part in GENERATED_PATH_PARTS
+        or part.endswith(".egg-info")
+        or (part.startswith(".") and part not in ALLOWED_HIDDEN_FILES)
+        for part in path.parts
+    )
+
+
+def _read_text_or_skip(path: Path) -> str | None:
+    try:
+        return path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def _python_files(*relative_roots: str) -> list[Path]:
     files: list[Path] = []
     for relative_root in relative_roots:
         root = REPO_ROOT / relative_root
-        files.extend(path for path in root.rglob("*.py") if "__pycache__" not in path.parts)
+        files.extend(path for path in root.rglob("*.py") if not _is_generated_path(path))
     return sorted(files)
 
 
@@ -76,12 +103,14 @@ def test_no_stale_apps_path_references() -> None:
     for root in searchable_roots:
         paths = [root] if root.is_file() else root.rglob("*")
         for path in paths:
-            if not path.is_file() or "__pycache__" in path.parts:
+            if not path.is_file() or _is_generated_path(path):
                 continue
-            if path.suffix not in {"", ".ini", ".md", ".py", ".toml", ".txt"}:
+            if path.suffix not in TEXT_SUFFIXES:
                 continue
 
-            text = path.read_text(encoding="utf-8")
+            text = _read_text_or_skip(path)
+            if text is None:
+                continue
             if stale_path_marker in text or stale_import_marker in text:
                 violations.append(str(path.relative_to(REPO_ROOT)))
 
