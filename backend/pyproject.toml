@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tradebox-backend"
+version = "0.1.0"
+description = "FastAPI backend app for tradebox."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.115.5",
+  "uvicorn[standard]==0.32.0",
+  "pydantic-settings==2.6.1",
+  "sqlalchemy==2.0.36",
+  "psycopg==3.2.3",
+  "alembic==1.14.0",
+  "greenlet==3.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.27.2",
+  "pytest==8.3.3",
+  "ruff==0.7.3",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "../packages/shared_core/src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
