@@ -15,6 +15,7 @@ def test_foundation_subpackages_import() -> None:
     subpackages = [
         "shared_core.backtesting",
         "shared_core.config",
+        "shared_core.market_data.databento",
         "shared_core.market_data",
         "shared_core.models",
         "shared_core.storage",
