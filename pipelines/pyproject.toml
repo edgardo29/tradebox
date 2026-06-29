@@ -25,7 +25,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src", "../packages/shared_core/src"]
+pythonpath = ["src", "../backend/src", "../packages/shared_core/src", "../packages/tradebox_workflows/src"]
 
 [tool.ruff]
 line-length = 100
