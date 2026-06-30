@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from shared_core.backtesting.candles import BacktestCandle, validate_backtest_candles
-from shared_core.backtesting.config import BacktestConfig
+from shared_core.backtesting.config import BacktestConfig, BacktestConfigError
 from shared_core.backtesting.strategy import (
     BacktestStrategy,
     BacktestStrategyResult,
@@ -58,6 +58,10 @@ class BacktestRunner:
             expected_symbol=config.symbol,
             expected_timeframe=config.timeframe,
         )
+        if config.strategy_name != self.strategy.name:
+            raise BacktestConfigError(
+                "Backtest config strategy_name must match the runner strategy."
+            )
         strategy_result = self.strategy.run(config=config, candles=candles)
         return _to_run_result(
             strategy_result,

@@ -40,8 +40,8 @@ class SimulatedTrade(Base):
         CheckConstraint("side IN ('long', 'short')", name="ck_simulated_trades_side_allowed"),
         CheckConstraint(
             "exit_reason IS NULL OR exit_reason IN "
-            "('target_hit', 'stop_hit', 'session_close', 'invalidation', "
-            "'end_of_data', 'manual_rule_exit', 'cancelled')",
+            "('stop_hit', 'target_hit', 'same_candle_stop', 'session_force_close', "
+            "'session_close', 'invalidation', 'end_of_data', 'manual_rule_exit', 'cancelled')",
             name="ck_simulated_trades_exit_reason_allowed",
         ),
         CheckConstraint("entry_price > 0", name="ck_simulated_trades_entry_price_positive"),

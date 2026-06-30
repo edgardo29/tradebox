@@ -305,7 +305,7 @@ def _detected_setup_from_payload(
             "detected setup",
         ),
         setup_key=_required_str(payload, "setup_key", "detected setup"),
-        setup_status=_optional_str(payload, "setup_status") or "detected",
+        setup_status=_required_str(payload, "setup_status", "detected setup"),
         side=_required_str(payload, "side", "detected setup"),
         timeframe=_optional_str(payload, "timeframe") or run.timeframe,
         session_date=_optional_date(payload.get("session_date"), "session_date", "detected setup")
@@ -367,9 +367,7 @@ def _simulated_trade_from_payload(
             payload.get("target_price"), "target_price", "simulated trade"
         ),
         quantity=_optional_decimal(payload.get("quantity"), "quantity", "simulated trade"),
-        risk_amount=_optional_decimal(
-            payload.get("risk_amount"), "risk_amount", "simulated trade"
-        ),
+        risk_amount=_optional_decimal(payload.get("risk_amount"), "risk_amount", "simulated trade"),
         gross_pnl=_optional_decimal(payload.get("gross_pnl"), "gross_pnl", "simulated trade"),
         net_pnl=_optional_decimal(payload.get("net_pnl"), "net_pnl", "simulated trade"),
         fees=_optional_decimal(payload.get("fees"), "fees", "simulated trade"),
