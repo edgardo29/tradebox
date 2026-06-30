@@ -36,7 +36,8 @@ class DetectedSetup(Base):
             "backtest_run_id", "setup_key", name="uq_detected_setups_backtest_setup_key"
         ),
         CheckConstraint(
-            "setup_status IN ('detected', 'triggered', 'invalidated', 'rejected', 'skipped')",
+            "setup_status IN ('pending_entry', 'triggered', 'expired', 'filtered_out', "
+            "'invalidated', 'detected', 'rejected', 'skipped')",
             name="ck_detected_setups_setup_status_allowed",
         ),
         CheckConstraint("side IN ('long', 'short')", name="ck_detected_setups_side_allowed"),
@@ -102,9 +103,7 @@ class DetectedSetup(Base):
         nullable=True,
     )
     setup_key: Mapped[str] = mapped_column(String(128), nullable=False)
-    setup_status: Mapped[str] = mapped_column(
-        String(32), nullable=False, server_default=text("'detected'")
-    )
+    setup_status: Mapped[str] = mapped_column(String(32), nullable=False)
     side: Mapped[str] = mapped_column(String(16), nullable=False)
     timeframe: Mapped[str] = mapped_column(String(16), nullable=False)
     session_date: Mapped[date] = mapped_column(Date, nullable=False)
